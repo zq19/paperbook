@@ -1,0 +1,37 @@
+{% extends 'learning_logs/base.html' %}
+{% load bootstrap3 %}
+
+{% block header %}
+<h2>Log in your account.</h2>
+{% endblock header %}
+
+{% block content %}
+
+
+    <form action="{% url 'users:login' %}" method="post" class="form">
+    {% csrf_token %}
+
+    <div class="form-group">
+        <p>
+            <label>
+            Username:<input type="text" class="form-control" name="username">
+            </label>
+        </p>
+    </div>
+
+    <div class="form-group">
+        <p>
+            <label>
+            Password:<input id="id_username" type="password" class="form-control" name="password">
+            </label>
+        </p>
+    </div>
+
+        {% buttons %}
+        <button name="submit" class="btn btn-primery">log in</button>
+        {% endbuttons %}
+        <span style="color:red;"> {{ status }}</span>
+        <input type="hidden" name="next" value="{% url 'learning_logs:index' %}" />
+    </form>
+
+{% endblock content %}
