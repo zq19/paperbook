@@ -7,7 +7,7 @@
       <meta http-equiv="X-UA-Compatible" content="IE=edge">
       <meta name="viewport" content="width=device-width,initial-scale=1">
 
-      <title>Learning Log</title>
+      <title>PaperBook</title>
       {% bootstrap_css %}
       {% bootstrap_javascript %}
   </head>
@@ -22,7 +22,7 @@
           aria-expanded="false" aria-controls="navbar">
           </button>
             <a class="navbar-brand" href="{% url 'learning_logs:index' %}">
-                Learning Log</a>
+                Paper Book</a>
         </div>
 
           <div id="navbar" class="navbar-collapse collapse">
@@ -32,7 +32,7 @@
 
               <ul class="nav navbar-nav navbar-right">
                   {% if user.is_authenticated %}
-                  <li><a>Hello, {{ user.username }}</a></li>
+                  <li><a href="{% url 'learning_logs:my_topic' %}">{{ user.username }}</a></li>
                   <li><a href="{% url 'users:logout' %}">log out</a></li>
                   {% else %}
                   <li><a href="{% url 'users:register' %}">register</a></li>
@@ -53,16 +53,3 @@
   </div> <!-- /contanier -->
   </body>
 </html>
-
-{#<p>#}
-{#      <a href = "{% url 'learning_logs:index' %}">Learning Log</a>-#}
-{#    <a href = "{% url 'learning_logs:topics' %}">Topics</a>-#}
-{#    {% if user.is_authenticated %}#}
-{#      Hello,{{ user.username }}.#}
-{#        <a href="{% url 'users:logout' %}">log out</a>#}
-{#    {% else %}#}
-{#        <a href="{% url 'users:register' %}">Register</a> /#}
-{#      <a href="{% url 'users:login' %}">Log in</a>#}
-{#    {% endif %}#}
-{#</p>#}
-{#{% block content %}{% endblock content %}#}

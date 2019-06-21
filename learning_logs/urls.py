@@ -19,4 +19,5 @@ urlpatterns = [
     re_path('^edit_entry/(?P<entry_id>\d+)/$',views.edit_entry,name='edit_entry'),
     re_path('^delete_entry/(?P<entry_id>\d+)/$',views.delete_entry,name='delete_entry'),
     re_path('^delete_topic/(?P<topic_id>\d+)/$',views.delete_topic,name='delete_topic'),
+    re_path('^topics/my_topic/$',views.my_topic,name='my_topic'),
 ]

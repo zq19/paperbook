@@ -17,19 +17,23 @@ def index(request):
 
 
 def check_topic_owner(topic, request):
+    """判断主题的拥有者"""
     if topic.owner != request.user:
         raise Http404
 
-@login_required
+
 def topics(request):
     """显示所有主题"""
     topics = Topic.objects.filter(public=True).order_by('date_added')
     return render(request,'learning_logs/topics.html',{'topics':topics})
 
-@login_required
+
 def topic(request,topic_id):
     """单击单个主题显示所有条目"""
     topic = get_object_or_404(Topic,id=topic_id)
+    # 检测请求主题是否私密，如果私密，判断是否请求者是拥有者
+    if topic.public == False:
+        check_topic_owner(topic,request)
     entries = topic.entry_set.order_by('-date_added')
     return render(request,'learning_logs/topic.html',{'topic':topic,'entries':entries})
 
@@ -44,7 +48,6 @@ def new_topic(request):
         # post提交的数据，对数据进行处理
         form = TopicForm(request.POST)
         if form.is_valid():
-            print(1111)
             new_topic = form.save(commit=False)
             new_topic.owner = request.user
             new_topic.save()
@@ -95,6 +98,7 @@ def edit_entry(request,entry_id):
 
 @login_required
 def delete_entry(request,entry_id):
+    """删除条目"""
     entry = get_object_or_404(Entry,id=entry_id)
     topic = entry.topic
     check_topic_owner(topic, request)
@@ -110,6 +114,7 @@ def delete_entry(request,entry_id):
 
 @login_required
 def delete_topic(request,topic_id):
+    """删除主题"""
     topic = get_object_or_404(Topic,id=topic_id)
     check_topic_owner(topic, request)
     if request.method == 'POST':
@@ -120,3 +125,9 @@ def delete_topic(request,topic_id):
         else:
             return redirect('learning_logs:topics')
     return render(request,'learning_logs/delete_topic.html',{'topic':topic})
+
+@login_required
+def my_topic(request):
+    """个人主题中心"""
+    topics = Topic.objects.filter(owner=request.user).order_by('date_added')
+    return render(request,'learning_logs/my_topic.html',{'topics':topics})
