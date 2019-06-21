@@ -11,7 +11,15 @@
 
     <form action="{% url 'learning_logs:new_topic' %}" method="post" class="form">
             {% csrf_token %}
-    {% bootstrap_form form %}
+    <div class="form-group">
+        <label>
+            <input type="text" class="form-control" name="text">
+            </label>
+    </div>
+    <div class="radio">
+        <label><input type="radio" name="public" value=1>Public</label>
+        <label><input type="radio" name="public" value=0>Private</label>
+    </div>
         {% buttons %}
         <button name="submit">add topic</button>
     {% endbuttons %}

@@ -8,9 +8,11 @@
      <ul>
          {% for topic in topics %}
            <li>
+           {% if topic.public %}
            <h3>
                <a href = "{% url 'learning_logs:topic' topic.id %}">{{ topic }}</a>
            </h3>
+           {% endif %}
            </li>
          {% empty %}
            <li>
@@ -20,6 +22,4 @@
      </ul>
   <h3><a href="{% url 'learning_logs:new_topic' %}">Add a new topic.</a></h3>
 
-  </body>
-  </html>
 {% endblock content %}

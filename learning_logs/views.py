@@ -23,7 +23,7 @@ def check_topic_owner(topic, request):
 @login_required
 def topics(request):
     """显示所有主题"""
-    topics = Topic.objects.order_by('date_added')
+    topics = Topic.objects.filter(public=True).order_by('date_added')
     return render(request,'learning_logs/topics.html',{'topics':topics})
 
 @login_required
@@ -44,6 +44,7 @@ def new_topic(request):
         # post提交的数据，对数据进行处理
         form = TopicForm(request.POST)
         if form.is_valid():
+            print(1111)
             new_topic = form.save(commit=False)
             new_topic.owner = request.user
             new_topic.save()
@@ -56,7 +57,7 @@ def new_topic(request):
 @login_required
 def new_entry(request,topic_id):
     """添加新条目"""
-    topic = Topic.objects.get(id=topic_id)
+    topic = get_object_or_404(Topic,id=topic_id)
     check_topic_owner(topic, request)
 
     if request.method != 'POST':
@@ -76,7 +77,7 @@ def new_entry(request,topic_id):
 @login_required
 def edit_entry(request,entry_id):
     """编辑既有条目"""
-    entry = Entry.objects.get(id=entry_id)
+    entry = get_object_or_404(Entry,id=entry_id)
     topic = entry.topic
     check_topic_owner(topic,request)
     if request != 'POST':
@@ -94,7 +95,7 @@ def edit_entry(request,entry_id):
 
 @login_required
 def delete_entry(request,entry_id):
-    entry = Entry.objects.get(id=entry_id)
+    entry = get_object_or_404(Entry,id=entry_id)
     topic = entry.topic
     check_topic_owner(topic, request)
     if request.method == 'POST':
@@ -109,7 +110,7 @@ def delete_entry(request,entry_id):
 
 @login_required
 def delete_topic(request,topic_id):
-    topic = Topic.objects.get(id=topic_id)
+    topic = get_object_or_404(Topic,id=topic_id)
     check_topic_owner(topic, request)
     if request.method == 'POST':
         data = request.POST.get('choice')
