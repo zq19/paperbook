@@ -83,7 +83,7 @@ def edit_entry(request,entry_id):
     entry = get_object_or_404(Entry,id=entry_id)
     topic = entry.topic
     check_topic_owner(topic,request)
-    if request != 'POST':
+    if request.method != 'POST':
         # 初次请求，使用当前条目填充表单
         form = EntryForm(instance=entry)
     else:
@@ -92,7 +92,6 @@ def edit_entry(request,entry_id):
         if form.is_valid():
             form.save()
             return redirect(reverse('learning_logs:topic',args=[topic.id]))
-
     return render(request,'learning_logs/edit_entry.html',{'entry':entry,'topic':topic,'form':form})
 
 
